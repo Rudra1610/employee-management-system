@@ -13,7 +13,7 @@ const app = express();
 
 // Middleware — Pure Native Wildcard Headers to completely drop CORS barriers across Render & Vercel
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://employee-management-system-5gp7.vercel.app/");
+  res.setHeader("Access-Control-Allow-Origin", "https://employee-management-system-olive-zeta.vercel.app/");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   
