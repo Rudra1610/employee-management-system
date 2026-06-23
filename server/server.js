@@ -11,19 +11,14 @@ const dns = require('dns');
 
 const app = express();
 
-// Middleware — FIXED: Dynamically accepts requests from both your Vercel links to wipe out CORS errors completely
+// Middleware — DYNAMIC MIRROR: Reflects the request origin dynamically to automatically bypass CORS on any Vercel domain name
 app.use((req, res, next) => {
-  const allowedOrigins = [
-    "https://employee-management-system-olive-zeta.vercel.app",
-    "https://employee-management-system-18h5.vercel.app"
-  ];
   const origin = req.headers.origin;
   
-  if (allowedOrigins.includes(origin)) {
+  if (origin) {
     res.setHeader("Access-Control-Allow-Origin", origin);
   } else {
-    // Fallback default so local development testing still handles cross-origin requests
-    res.setHeader("Access-Control-Allow-Origin", "https://employee-management-system-18h5.vercel.app");
+    res.setHeader("Access-Control-Allow-Origin", "*");
   }
   
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
