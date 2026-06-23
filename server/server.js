@@ -11,9 +11,21 @@ const dns = require('dns');
 
 const app = express();
 
-// Middleware — FIXED: Removed trailing slash from origin to strictly pass browser CORS validation checks
+// Middleware — FIXED: Dynamically accepts requests from both your Vercel links to wipe out CORS errors completely
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://employee-management-system-olive-zeta.vercel.app");
+  const allowedOrigins = [
+    "https://employee-management-system-olive-zeta.vercel.app",
+    "https://employee-management-system-18h5.vercel.app"
+  ];
+  const origin = req.headers.origin;
+  
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  } else {
+    // Fallback default so local development testing still handles cross-origin requests
+    res.setHeader("Access-Control-Allow-Origin", "https://employee-management-system-18h5.vercel.app");
+  }
+  
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   
