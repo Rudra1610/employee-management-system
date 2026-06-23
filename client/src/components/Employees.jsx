@@ -23,11 +23,12 @@ export default function Employees() {
   const recordsPerPage = 5;
 
   // DYNAMIC API BASE URL SETUP: Automatically toggles between local testing and cloud production hosts
+  // FIXED: Successfully mapped to your current active live Render backend service layout configuration
   const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:5000'
-    : 'https://ems-backend-j5vg.onrender.com'; // Replace this string parameter with your live Render backend Web Service URL
+    : 'https://ems-backend-j5vg.onrender.com';
 
-  const [onboardData, setOnboardData] = useState({
+  const [onboardData, setOnboardData] = useState({ 
     name: '',
     email: '',
     password: '', 

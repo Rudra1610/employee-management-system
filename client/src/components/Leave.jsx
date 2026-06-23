@@ -23,13 +23,13 @@ export default function Leave() {
   });
 
   // DYNAMIC API BASE URL SETUP: Automatically toggles between local testing and cloud production hosts
+  // FIXED: Successfully injected your new running Render backplane URL
   const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:5000'
-    : 'https://ems-backend-j5vg.onrender.com'; // Replace this string parameter with your live Render backend Web Service URL
+    : 'https://ems-backend-j5vg.onrender.com';
 
   const fetchLeaves = async () => {
     try {
-      // FIXED: Injected dynamic API_BASE_URL to handle cloud routing configurations
       const response = await fetch(`${API_BASE_URL}/api/leaves/all`);
       if (response.ok) {
         const data = await response.json();
@@ -51,7 +51,6 @@ export default function Leave() {
   const handleApplySubmit = async (e) => {
     e.preventDefault();
     try {
-      // FIXED: Injected dynamic API_BASE_URL
       const response = await fetch(`${API_BASE_URL}/api/leaves/apply`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -68,7 +67,7 @@ export default function Leave() {
       if (response.ok) {
         toast.success('Leave request securely logged to MongoDB!');
         setFormData({ type: 'Sick Leave', startDate: '', endDate: '', reason: '' });
-        setCurrentPage(1); // Reset to first page on new submission
+        setCurrentPage(1); 
         fetchLeaves(); 
       } else {
         const errData = await response.json();
@@ -81,7 +80,6 @@ export default function Leave() {
 
   const handleStatusUpdate = async (id, newStatus) => {
     try {
-      // FIXED: Injected dynamic API_BASE_URL
       const response = await fetch(`${API_BASE_URL}/api/leaves/update-status/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -114,7 +112,6 @@ export default function Leave() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // FIXED: Injected dynamic API_BASE_URL
           const response = await fetch(`${API_BASE_URL}/api/leaves/delete/${leaveId}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
@@ -122,7 +119,6 @@ export default function Leave() {
 
           if (response.ok) {
             setLeaves(prevLeaves => prevLeaves.filter(leave => leave._id !== leaveId));
-            // Adjust pagination index edge case if last element on page is deleted
             if ((leaves.length - 1) <= (currentPage - 1) * recordsPerPage && currentPage > 1) {
               setCurrentPage(p => p - 1);
             }
@@ -142,22 +138,18 @@ export default function Leave() {
   const isManagementRole = userRole === 'super_admin' || userRole === 'admin';
   const showLeaveForm = userRole === 'employee';
 
-  // --- PAGINATION MATHEMATICS ---
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
   const currentRecordsList = leaves.slice(indexOfFirstRecord, indexOfLastRecord);
   const totalPages = Math.ceil(leaves.length / recordsPerPage) || 1;
 
   return (
-    /* FIXED: Changed min-h-screen to h-screen and forced overflow-hidden to fully lock the main layout view frame */
-    <div className="h-screen w-full bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-slate-100 flex flex-col md:flex-row w-full overflow-hidden antialiased">
+    <div className="h-screen w-full bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-slate-100 flex flex-col md:flex-row overflow-hidden antialiased">
       
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
-      {/* FIXED: Shifted classes to max-w-full and h-screen overflow-y-auto so ONLY this content container handles scrolling, pushing the bar to the bezel edge */}
       <div className="flex-1 h-screen overflow-y-auto p-6 md:p-8 max-w-full w-full transition-all duration-300 relative">
         
-        {/* UNIFIED TOP HEADER BAR ROW WITH HAMBURGER CONTROLLER */}
         <div className="flex items-center gap-4 mb-6 pb-2 border-b border-slate-800/40">
           <button
             type="button"
@@ -178,10 +170,8 @@ export default function Leave() {
           </div>
         </div>
 
-        {/* Content Section Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-2">
           
-          {/* LEFT PANEL: Leave Submission Form (Only shown to basic Employees) */}
           {showLeaveForm && (
             <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xl h-fit backdrop-blur-md">
               <h3 className="text-lg font-bold text-white mb-1">Reason and Date of Leave</h3>
@@ -220,7 +210,6 @@ export default function Leave() {
             </div>
           )}
 
-          {/* RIGHT/MAIN PANEL: Global Ledger View */}
           <div className={showLeaveForm ? 'lg:col-span-2' : 'lg:col-span-3'}>
             <div className="bg-slate-900/60 border border-slate-800 rounded-2xl shadow-xl overflow-hidden backdrop-blur-md">
               <div className="p-6 border-b border-slate-800 bg-slate-900/20">
@@ -303,7 +292,6 @@ export default function Leave() {
                     </table>
                   </div>
 
-                  {/* PAGINATION CONTROL FOOTER */}
                   {leaves.length > recordsPerPage && (
                     <div className="p-4 border-t border-slate-800/60 bg-slate-900/20 flex items-center justify-between">
                       <span className="text-xs text-slate-500 font-medium">

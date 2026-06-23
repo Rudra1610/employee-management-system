@@ -20,7 +20,7 @@ export default function Dashboard() {
   // DYNAMIC API BASE URL SETUP: Automatically toggles between local testing and cloud production hosts
   const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:5000'
-    : 'https://ems-backend-j5vg.onrender.com'; // Replace this string parameter with your live Render backend Web Service URL
+    : 'https://ems-backend-j5vg.onrender.com';
 
   const fetchDashboardStats = async () => {
     if (userRole === 'employee') {
@@ -29,7 +29,6 @@ export default function Dashboard() {
     }
 
     try {
-      // FIXED: Refactored endpoint mapping string to inherit the dynamic production domain URL
       const response = await fetch(`${API_BASE_URL}/api/auth/dashboard-stats`);
       if (response.ok) {
         const data = await response.json();
@@ -58,12 +57,10 @@ export default function Dashboard() {
   const totalPages = Math.ceil((stats.allEmployeesList || []).length / recordsPerPage) || 1;
 
   return (
-    /* FIXED: Changed min-h-screen to h-screen and added overflow-hidden to lock the layout viewport */
     <div className="h-screen w-full bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-slate-100 flex flex-col md:flex-row overflow-hidden">
       
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
-      {/* FIXED: Added h-screen and overflow-y-auto here so ONLY this dashboard area scrolls while the sidebar stays locked */}
       <div className="flex-1 h-screen overflow-y-auto p-6 md:p-8 max-w-7xl mx-auto w-full transition-all duration-300 relative">
         
         {/* Header Controller */}
@@ -86,9 +83,7 @@ export default function Dashboard() {
       
         {(userRole === 'super_admin' || userRole === 'admin') && (
           <>
-            
             <div className="w-full lg:max-w-[65%] space-y-6">
-              
               <div className="flex flex-wrap gap-4">
                 <div className="bg-slate-900/60 border border-slate-800 px-4 py-2.5 rounded-xl shadow-lg backdrop-blur-md flex items-center gap-2.5">
                   <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Active Employees/Admins:</span>
@@ -101,7 +96,6 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              
               <div className="bg-slate-900/60 border border-slate-800 rounded-2xl shadow-xl overflow-hidden w-full">
                 <div className="p-5 border-b border-slate-800 bg-slate-950/20">
                   <h3 className="text-sm font-bold text-white uppercase tracking-wider">Master Employee Register</h3>
@@ -135,7 +129,6 @@ export default function Dashboard() {
                       </table>
                     </div>
 
-                    {/* PAGINATION INTERACTIVE CONTROL LAYER FOOTER */}
                     {stats.allEmployeesList.length > recordsPerPage && (
                       <div className="p-3 border-t border-slate-800/60 bg-slate-950/20 flex items-center justify-between text-xs">
                         <span className="text-slate-500 font-medium">
@@ -169,7 +162,6 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* CONTENT BLOCK RIGHT: OUT OF OFFICE REGISTRY */}
             <div className="w-full lg:w-[30%] p-5 bg-slate-900/60 border border-slate-800 rounded-2xl shadow-xl backdrop-blur-md mt-6 lg:mt-0 lg:absolute lg:top-8 lg:right-8">
               <h3 className="text-red-500 font-bold tracking-wider uppercase text-xs mb-1">
                 OUT OF OFFICE REGISTRY (TODAY/TOMORROW)
@@ -204,7 +196,6 @@ export default function Dashboard() {
           </>
         )}
 
-        {/* Regular Employee View */}
         {userRole === 'employee' && (
           <div className="bg-slate-900/60 border border-slate-800 p-8 rounded-2xl shadow-xl max-w-2xl">
             <h3 className="text-lg font-bold text-white mb-2">Employee Portal Active</h3>
