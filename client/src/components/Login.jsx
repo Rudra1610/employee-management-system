@@ -11,7 +11,7 @@ export default function Login() {
   // DYNAMIC API BASE URL SETUP: Automatically toggles between local testing and production deployment
   const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:5000'
-    : 'https://ems-backend-44yg.onrender.com';
+    : 'https://ems-backend-j5vg.onrender.com';
 
   const onSubmit = async (formData) => {
     // 1. Predefined Super Admin credentials check

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 
-const API_URL = 'https://ems-backend-44yg.onrender.com/api/auth';
+const API_URL = 'https://ems-backend-j5vg.onrender.com';
 
 export const useAuthStore = create((set) => ({
   user: null,
